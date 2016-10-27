@@ -1,27 +1,3 @@
-/* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above notice and this permission notice shall be included in all copies
-* or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-* SOFTWARE.
-*/
-/* File for "Basic Shapes" lesson of the OpenGL tutorial on
-* www.videotutorialsrock.com
-*/
-
-
-
 #include <iostream>
 #include <stdlib.h> //Needed for "exit" function
 
@@ -68,6 +44,18 @@ void handleResize(int w, int h) {
 
 GLfloat angle = 0, angle2 = 360;
 //Draws the 3D scene
+
+void drawTriangles(float a, float b, float c, float d, float red, float green, float blue)
+{
+	glBegin(GL_TRIANGLES);
+	glColor3f(red, green, blue);
+	glVertex3f(a, b, -10.0f);
+	glVertex3f(c, b, -10.0f);
+	glVertex3f(a, d, -10.0f);
+	glEnd();
+
+}
+
 void drawScene() {
 
 	//Clear information from last draw
@@ -85,9 +73,15 @@ void drawScene() {
 	cout << angle2 << " " << angle << endl;
 	glColor3f(0.0f, 0.0f, 1.0f);
 	//1
+	glPushMatrix();
+	glTranslatef(-0.5, -0.5, 0.0);
+	glRotatef(angle, 0.0, 0.0, 1.0);
+	glTranslatef(0.5, 0.5, 0.0);
+	
 	glVertex3f(0.0f, 0.0f, -10.0f);
 	glVertex3f(1.0f, 0.0f, -10.0f);
 	glVertex3f(0.0f, 1.0f, -10.0f);
+	glPopMatrix();
 
 	//2
 	glVertex3f(0.0f, 0.0f, -10.0f);
