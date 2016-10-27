@@ -1,13 +1,6 @@
 #include <iostream>
-#include <stdlib.h> //Needed for "exit" function
-
-//Include OpenGL header files, so that we can use OpenGL
-#ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
-#include <GLUT/glut.h>
-#else
+#include <stdlib.h>
 #include <GL/glut.h>
-#endif
 
 using namespace std;
 
@@ -33,30 +26,27 @@ void handleResize(int w, int h) {
 
 	glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
 
-								 //Set the camera perspective
 	glLoadIdentity(); //Reset the camera
-	gluPerspective(45.0,                  //The camera angle
-		(double)w / (double)h, //The width-to-height ratio
-		1.0,                   //The near z clipping coordinate
-		200.0);                //The far z clipping coordinate
+	gluPerspective(45.0, (double)w / (double)h, 1.0, 200.0);
 }
 
-
 GLfloat angle = 0, angle2 = 360;
-//Draws the 3D scene
+float scale = 0;
+int counter = 0;
 
 void drawTriangles(float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
 {
 	glBegin(GL_TRIANGLES);
-	glColor3f(red, green, blue);
-	glVertex3f(a, b, -20.0f);
-	glVertex3f(c, b, -20.0f);
-	glVertex3f(a, d, -20.0f);
+		glColor3f(red, green, blue);
+		glVertex3f(a, b, -20.0f);
+		glVertex3f(c, b, -20.0f);
+		glVertex3f(a, d, -20.0f);
 	glEnd();
 }
 
 void rotateTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y )
 {
+	glTranslatef(around_x, around_y, 0);
 	glTranslatef(-around_x - move_me_about_x, -around_y - move_me_about_y, 0);
 	glRotatef(angle, 0.0, 0.0, 1.0);
 	glTranslatef(around_x + move_me_about_x, around_y + move_me_about_y, 0);
@@ -65,8 +55,8 @@ void rotateTriangle(GLfloat angle, float around_x, float around_y, float move_me
 void drawOneTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y, float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
 {
 	glPushMatrix();
-	rotateTriangle(angle, around_x, around_y, move_me_about_x, move_me_about_y);
-	drawTriangles(a, b, c, d, red, green, blue);
+		rotateTriangle(angle, around_x, around_y, move_me_about_x, move_me_about_y);
+		drawTriangles(a, b, c, d, red, green, blue);
 	glPopMatrix();
 }
 
@@ -80,55 +70,65 @@ void drawScene() {
 
 	glPushMatrix();
 		rotateTriangle(angle, 0, 0, 0, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, 1, 1, 0, 0, 1);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, -1, 1, 0, 0, 1);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, 1, -1, 0, 0, 1);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, -1, -1, 0, 0, 1);
+		drawOneTriangle(angle, scale, scale, 0.5, 0.5, 0, 0, 1, 1, 0, 0, 1);
+		drawOneTriangle(angle, -scale, scale, 0.0, 0.0, 0, 0, -1, 1, 0, 0, 1);
+		drawOneTriangle(angle, scale, -scale, 0.0, 0.0, 0, 0, 1, -1, 0, 0, 1);
+		drawOneTriangle(angle, -scale, -scale, 0.0, 0.0, 0, 0, -1, -1, 0, 0, 1);
 
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 1, 1, 2, 0, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, 0, 2, 1, 1, 0.7, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, 0, 2, -1, 0, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -1, 1, -2, 1, 0.7, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -1, -1, -2, 0, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, 0, -2, -1, 1, 0.7, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, 0, -2, 1, 0, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 1, -1, 2, 1, 0.7, 0);
+		drawOneTriangle(angle, 2 * scale, 2 * scale, 0.0, 0.0, 0, 1, 1, 2, 0, 1, 0);
+		drawOneTriangle(angle, 2 * scale, 2 * scale, 0.0, 0.0, 1, 0, 2, 1, 1, 0.7, 0);
+		drawOneTriangle(angle, 2 * scale, -2 * scale, 0.0, 0.0, 1, 0, 2, -1, 0, 1, 0);
+		drawOneTriangle(angle, 2 * scale, -2 * scale, 0.0, 0.0, 0, -1, 1, -2, 1, 0.7, 0);
+		drawOneTriangle(angle, -2 * scale, -2 * scale, 0.0, 0.0, 0, -1, -1, -2, 0, 1, 0);
+		drawOneTriangle(angle, -2 * scale, -2 * scale, 0.0, 0.0, -1, 0, -2, -1, 1, 0.7, 0);
+		drawOneTriangle(angle, -2 * scale, 2 * scale, 0.0, 0.0, -1, 0, -2, 1, 0, 1, 0);
+		drawOneTriangle(angle, -2 * scale, 2 * scale, 0.0, 0.0, 0, 1, -1, 2, 1, 0.7, 0);
 	glPopMatrix();
 
 	glPushMatrix();
-		rotateTriangle(angle, 0, 0, 0, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 2, 1, 3, 1, 0, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, 1, 2, 2, 1, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 2, 0, 3, 1, 1, 0, 1);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 2, 0, 3, -1, 1, 0, 0);	
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, -1, 2, -2, 1, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -2, 1, -3, 1, 0, 1);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -2, -1, -3, 1, 0, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, -1, -2, -2, 1, 1, 0);	
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -2, 0, -3, -1, 1, 0, 1);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -2, 0, -3, 1, 1, 0, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, 1, -2, 2, 1, 1, 0);
-		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 2, -1, 3, 1, 0, 1);	
+		rotateTriangle(angle2, 0, 0, 0, 0);
+		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 0, 2, 1, 3, 1, 0, 0);
+		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 1, 1, 2, 2, 1, 1, 0);
+		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 2, 0, 3, 1, 1, 0, 1);
+		drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 2, 0, 3, -1, 1, 0, 0);
+		drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 1, -1, 2, -2, 1, 1, 0);
+		drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 0, -2, 1, -3, 1, 0, 1);
+		drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, 0, -2, -1, -3, 1, 0, 0);
+		drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, -1, -1, -2, -2, 1, 1, 0);
+		drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, -2, 0, -3, -1, 1, 0, 1);
+		drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, -2, 0, -3, 1, 1, 0, 0);
+		drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, -1, 1, -2, 2, 1, 1, 0);
+		drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, 0, 2, -1, 3, 1, 0, 1);
 	glPopMatrix();
-
-
 	glutSwapBuffers(); //Send the 3D scene to the screen
 }
 
 void update(int value)
 {
-	angle += 2.0f;
-	angle2 -= 2.0f;
-	if (angle>360.0f)
-	{
+	angle += 1.0f;
+	angle2 -= 3.0f;
+	if (angle > 360.0f)
 		angle -= 360;
-	}
-	if (angle2< 0.0f)
-	{
+	if (angle2 < 0.0f)
 		angle2 = 360.0f;
+
+	counter++;
+	if (counter <= 10)
+	{
+		scale += 0.05;
 	}
+	else if (counter > 10)
+	{
+		scale -= 0.05;
+	}
+	if (counter == 20)
+	{
+		counter = 0;
+	}
+
 	glutPostRedisplay();
-	glutTimerFunc(25, update, 0);
+	glutTimerFunc(35, update, 0);
+	cout << counter << endl;
 }
 
 int main(int argc, char** argv) {
@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800); //Set the window size
 
-								  //Create the window
+	//Create the window
 	glutCreateWindow("Stupid triangles");
 	initRendering(); //Initialize rendering
 
