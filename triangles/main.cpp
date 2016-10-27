@@ -45,15 +45,29 @@ void handleResize(int w, int h) {
 GLfloat angle = 0, angle2 = 360;
 //Draws the 3D scene
 
-void drawTriangles(float a, float b, float c, float d, float red, float green, float blue)
+void drawTriangles(float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
 {
 	glBegin(GL_TRIANGLES);
 	glColor3f(red, green, blue);
-	glVertex3f(a, b, -10.0f);
-	glVertex3f(c, b, -10.0f);
-	glVertex3f(a, d, -10.0f);
+	glVertex3f(a, b, -20.0f);
+	glVertex3f(c, b, -20.0f);
+	glVertex3f(a, d, -20.0f);
 	glEnd();
+}
 
+void rotateTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y )
+{
+	glTranslatef(-around_x - move_me_about_x, -around_y - move_me_about_y, 0);
+	glRotatef(angle, 0.0, 0.0, 1.0);
+	glTranslatef(around_x + move_me_about_x, around_y + move_me_about_y, 0);
+}
+
+void drawOneTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y, float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
+{
+	glPushMatrix();
+	rotateTriangle(angle, around_x, around_y, move_me_about_x, move_me_about_y);
+	drawTriangles(a, b, c, d, red, green, blue);
+	glPopMatrix();
 }
 
 void drawScene() {
@@ -65,152 +79,38 @@ void drawScene() {
 	glLoadIdentity(); //Reset the drawing perspective
 
 	glPushMatrix();
-	glRotatef(angle2, 0.0, 0.0, 1.0);
-	glBegin(GL_TRIANGLES); //Begin triangle coordinates
+		rotateTriangle(angle, 0, 0, 0, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, 1, 1, 0, 0, 1);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, -1, 1, 0, 0, 1);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, 1, -1, 0, 0, 1);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 0, -1, -1, 0, 0, 1);
 
-	//glPushMatrix();
-	//glRotatef(angle2, 0.0, 0.0, 1.0);
-	cout << angle2 << " " << angle << endl;
-	glColor3f(0.0f, 0.0f, 1.0f);
-	//1
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 1, 1, 2, 0, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, 0, 2, 1, 1, 0.7, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, 0, 2, -1, 0, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -1, 1, -2, 1, 0.7, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -1, -1, -2, 0, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, 0, -2, -1, 1, 0.7, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, 0, -2, 1, 0, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 1, -1, 2, 1, 0.7, 0);
+	glPopMatrix();
+
 	glPushMatrix();
-	glTranslatef(-0.5, -0.5, 0.0);
-	glRotatef(angle, 0.0, 0.0, 1.0);
-	glTranslatef(0.5, 0.5, 0.0);
-	
-	glVertex3f(0.0f, 0.0f, -10.0f);
-	glVertex3f(1.0f, 0.0f, -10.0f);
-	glVertex3f(0.0f, 1.0f, -10.0f);
+		rotateTriangle(angle, 0, 0, 0, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 2, 1, 3, 1, 0, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, 1, 2, 2, 1, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 2, 0, 3, 1, 1, 0, 1);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 2, 0, 3, -1, 1, 0, 0);	
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 1, -1, 2, -2, 1, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -2, 1, -3, 1, 0, 1);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, -2, -1, -3, 1, 0, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, -1, -2, -2, 1, 1, 0);	
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -2, 0, -3, -1, 1, 0, 1);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -2, 0, -3, 1, 1, 0, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, -1, 1, -2, 2, 1, 1, 0);
+		drawOneTriangle(angle, 0.0, 0.0, 0.0, 0.0, 0, 2, -1, 3, 1, 0, 1);	
 	glPopMatrix();
 
-	//2
-	glVertex3f(0.0f, 0.0f, -10.0f);
-	glVertex3f(0.0f, -1.0f, -10.0f);
-	glVertex3f(1.0f, 0.0f, -10.0f);
-
-	//3
-	glVertex3f(0.0f, 0.0f, -10.0f);
-	glVertex3f(0.0f, -1.0f, -10.0f);
-	glVertex3f(-1.0f, 0.0f, -10.0f);
-
-	//4
-	glVertex3f(0.0f, 0.0f, -10.0f);
-	glVertex3f(-1.0f, 0.0f, -10.0f);
-	glVertex3f(0.0f, 1.0f, -10.0f);
-	//glPopMatrix();
-
-
-	glColor3f(0.0f, 1.0f, 0.0f);
-	//6
-	glVertex3f(0.0f, 1.0f, -10.0f);
-	glVertex3f(1.0f, 1.0f, -10.0f);
-	glVertex3f(0.0f, 2.0f, -10.0f);
-
-	//8
-	glVertex3f(1.0f, 0.0f, -10.0f);
-	glVertex3f(1.0f, -1.0f, -10.0f);
-	glVertex3f(2.0f, 0.0f, -10.0f);
-
-	//10
-	glVertex3f(0.0f, -1.0f, -10.0f);
-	glVertex3f(0.0f, -2.0f, -10.0f);
-	glVertex3f(-1.0f, -1.0f, -10.0f);
-
-	//12
-	glVertex3f(-1.0f, 0.0f, -10.0f);
-	glVertex3f(-2.0f, 0.0f, -10.0f);
-	glVertex3f(-1.0f, 1.0f, -10.0f);
-
-
-
-	glColor3f(1.0f, 0.7f, 0.0f);
-	//9
-	glVertex3f(0.0f, -1.0f, -10.0f);
-	glVertex3f(0.0f, -2.0f, -10.0f);
-	glVertex3f(1.0f, -1.0f, -10.0f);
-
-	//5
-	glVertex3f(0.0f, 1.0f, -10.0f);
-	glVertex3f(-1.0f, 1.0f, -10.0f);
-	glVertex3f(0.0f, 2.0f, -10.0f);
-
-	//7
-	glVertex3f(1.0f, 0.0f, -10.0f);
-	glVertex3f(2.0f, 0.0f, -10.0f);
-	glVertex3f(1.0f, 1.0f, -10.0f);
-
-	//11
-	glVertex3f(-1.0f, 0.0f, -10.0f);
-	glVertex3f(-1.0f, -1.0f, -10.0f);
-	glVertex3f(-2.0f, 0.0f, -10.0f);
-
-	glColor3f(1.0f, 1.0f, 0.0f);
-	//14
-	glVertex3f(1.0f, 1.0f, -10.0f);
-	glVertex3f(2.0f, 1.0f, -10.0f);
-	glVertex3f(1.0f, 2.0f, -10.0f);
-
-	//17
-	glVertex3f(1.0f, -1.0f, -10.0f);
-	glVertex3f(1.0f, -2.0f, -10.0f);
-	glVertex3f(2.0f, -1.0f, -10.0f);
-	 
-	//20
-	glVertex3f(-1.0f, -1.0f, -10.0f);
-	glVertex3f(-1.0f, -2.0f, -10.0f);
-	glVertex3f(-2.0f, -1.0f, -10.0f);
-
-	//23
-	glVertex3f(-1.0f, 1.0f, -10.0f);
-	glVertex3f(-2.0f, 1.0f, -10.0f);
-	glVertex3f(-1.0f, 2.0f, -10.0f);
-
-
-	glColor3f(1.0f, 0.0f, 0.0f);
-	//13
-	glVertex3f(0.0f, 2.0f, -10.0f);
-	glVertex3f(1.0f, 2.0f, -10.0f);
-	glVertex3f(0.0f, 3.0f, -10.0f);
-
-	//16
-	glVertex3f(2.0f, 0.0f, -10.0f);
-	glVertex3f(2.0f, -1.0f, -10.0f);
-	glVertex3f(3.0f, 0.0f, -10.0f);
-
-	//19
-	glVertex3f(0.0f, -2.0f, -10.0f);
-	glVertex3f(0.0f, -3.0f, -10.0f);
-	glVertex3f(-1.0f, -2.0f, -10.0f);
-
-	//22
-	glVertex3f(-2.0f, 0.0f, -10.0f);
-	glVertex3f(-3.0f, 0.0f, -10.0f);
-	glVertex3f(-2.0f, 1.0f, -10.0f);
-
-
-	glColor3f(1.0f, 0.0f, 1.0f);
-	//15
-	glVertex3f(2.0f, 0.0f, -10.0f);
-	glVertex3f(3.0f, 0.0f, -10.0f);
-	glVertex3f(2.0f, 1.0f, -10.0f);
-
-	//18
-	glVertex3f(0.0f, -2.0f, -10.0f);
-	glVertex3f(0.0f, -3.0f, -10.0f);
-	glVertex3f(1.0f, -2.0f, -10.0f);
-
-	//21
-	glVertex3f(-2.0f, 0.0f, -10.0f);
-	glVertex3f(-2.0f, -1.0f, -10.0f);
-	glVertex3f(-3.0f, 0.0f, -10.0f);
-
-	//24
-	glVertex3f(0.0f, 2.0f, -10.0f);
-	glVertex3f(-1.0f, 2.0f, -10.0f);
-	glVertex3f(0.0f, 3.0f, -10.0f);
-
-	glEnd(); //End triangle coordinates
-	glPopMatrix();
 
 	glutSwapBuffers(); //Send the 3D scene to the screen
 }
@@ -252,12 +152,3 @@ int main(int argc, char** argv) {
 	glutMainLoop(); //Start the main loop.  glutMainLoop doesn't return.
 	return 0; //This line is never reached
 }
-
-
-
-
-
-
-
-
-
