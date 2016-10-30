@@ -46,12 +46,6 @@ void drawTriangles(float a, float b, float c, float d, float red = 1.0, float gr
 
 void rotateTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y )
 {
-	//glTranslatef(around_x, around_y, 0);
-	//glTranslatef(-around_x - move_me_about_x, -around_y - move_me_about_y, 0);
-	//glRotatef(angle, 0.0, 0.0, 1.0);
-	//glTranslatef(around_x + move_me_about_x, around_y + move_me_about_y, 0);
-
-	
 	glTranslatef(-move_me_about_x, -move_me_about_y, 0);
 	glRotatef(angle2, 0.0, 0.0, 1.0);
 	glTranslatef(move_me_about_x, move_me_about_y, 0);
