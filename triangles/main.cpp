@@ -31,7 +31,7 @@ void handleResize(int w, int h) {
 }
 
 GLfloat angle = 0, angle2 = 360;
-float scale = 0;
+float scale = 1;
 int counter = 0;
 
 void drawTriangles(float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
@@ -46,10 +46,16 @@ void drawTriangles(float a, float b, float c, float d, float red = 1.0, float gr
 
 void rotateTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y )
 {
-	glTranslatef(around_x, around_y, 0);
-	glTranslatef(-around_x - move_me_about_x, -around_y - move_me_about_y, 0);
-	glRotatef(angle, 0.0, 0.0, 1.0);
-	glTranslatef(around_x + move_me_about_x, around_y + move_me_about_y, 0);
+	//glTranslatef(around_x, around_y, 0);
+	//glTranslatef(-around_x - move_me_about_x, -around_y - move_me_about_y, 0);
+	//glRotatef(angle, 0.0, 0.0, 1.0);
+	//glTranslatef(around_x + move_me_about_x, around_y + move_me_about_y, 0);
+
+	
+	glTranslatef(-move_me_about_x, -move_me_about_y, 0);
+	glRotatef(angle2, 0.0, 0.0, 1.0);
+	glTranslatef(move_me_about_x, move_me_about_y, 0);
+
 }
 
 void drawOneTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y, float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
@@ -69,36 +75,36 @@ void drawScene() {
 	glLoadIdentity(); //Reset the drawing perspective
 
 	glPushMatrix();
-		rotateTriangle(angle, 0, 0, 0, 0);
+		//rotateTriangle(angle, 0, 0, 0, 0);
 		drawOneTriangle(angle, scale, scale, 0.5, 0.5, 0, 0, 1, 1, 0, 0, 1);
-		drawOneTriangle(angle, -scale, scale, 0.0, 0.0, 0, 0, -1, 1, 0, 0, 1);
-		drawOneTriangle(angle, scale, -scale, 0.0, 0.0, 0, 0, 1, -1, 0, 0, 1);
-		drawOneTriangle(angle, -scale, -scale, 0.0, 0.0, 0, 0, -1, -1, 0, 0, 1);
+		drawOneTriangle(angle, -scale, scale, -0.5, 0.5, 0, 0, -1, 1, 0, 0, 1);
+		drawOneTriangle(angle, scale, -scale, 0.5, -0.5, 0, 0, 1, -1, 0, 0, 1);
+		drawOneTriangle(angle, -scale, -scale, -0.5, -0.5, 0, 0, -1, -1, 0, 0, 1);
 
-		drawOneTriangle(angle, 2 * scale, 2 * scale, 0.0, 0.0, 0, 1, 1, 2, 0, 1, 0);
-		drawOneTriangle(angle, 2 * scale, 2 * scale, 0.0, 0.0, 1, 0, 2, 1, 1, 0.7, 0);
-		drawOneTriangle(angle, 2 * scale, -2 * scale, 0.0, 0.0, 1, 0, 2, -1, 0, 1, 0);
-		drawOneTriangle(angle, 2 * scale, -2 * scale, 0.0, 0.0, 0, -1, 1, -2, 1, 0.7, 0);
-		drawOneTriangle(angle, -2 * scale, -2 * scale, 0.0, 0.0, 0, -1, -1, -2, 0, 1, 0);
-		drawOneTriangle(angle, -2 * scale, -2 * scale, 0.0, 0.0, -1, 0, -2, -1, 1, 0.7, 0);
-		drawOneTriangle(angle, -2 * scale, 2 * scale, 0.0, 0.0, -1, 0, -2, 1, 0, 1, 0);
-		drawOneTriangle(angle, -2 * scale, 2 * scale, 0.0, 0.0, 0, 1, -1, 2, 1, 0.7, 0);
+		//drawOneTriangle(angle, 2 * scale, 2 * scale, 0.0, 0.0, 0, 1, 1, 2, 0, 1, 0);
+		//drawOneTriangle(angle, 2 * scale, 2 * scale, 0.0, 0.0, 1, 0, 2, 1, 1, 0.7, 0);
+		//drawOneTriangle(angle, 2 * scale, -2 * scale, 0.0, 0.0, 1, 0, 2, -1, 0, 1, 0);
+		//drawOneTriangle(angle, 2 * scale, -2 * scale, 0.0, 0.0, 0, -1, 1, -2, 1, 0.7, 0);
+		//drawOneTriangle(angle, -2 * scale, -2 * scale, 0.0, 0.0, 0, -1, -1, -2, 0, 1, 0);
+		//drawOneTriangle(angle, -2 * scale, -2 * scale, 0.0, 0.0, -1, 0, -2, -1, 1, 0.7, 0);
+		//drawOneTriangle(angle, -2 * scale, 2 * scale, 0.0, 0.0, -1, 0, -2, 1, 0, 1, 0);
+		//drawOneTriangle(angle, -2 * scale, 2 * scale, 0.0, 0.0, 0, 1, -1, 2, 1, 0.7, 0);
 	glPopMatrix();
 
 	glPushMatrix();
-		rotateTriangle(angle2, 0, 0, 0, 0);
-		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 0, 2, 1, 3, 1, 0, 0);
-		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 1, 1, 2, 2, 1, 1, 0);
-		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 2, 0, 3, 1, 1, 0, 1);
-		drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 2, 0, 3, -1, 1, 0, 0);
-		drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 1, -1, 2, -2, 1, 1, 0);
-		drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 0, -2, 1, -3, 1, 0, 1);
-		drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, 0, -2, -1, -3, 1, 0, 0);
-		drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, -1, -1, -2, -2, 1, 1, 0);
-		drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, -2, 0, -3, -1, 1, 0, 1);
-		drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, -2, 0, -3, 1, 1, 0, 0);
-		drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, -1, 1, -2, 2, 1, 1, 0);
-		drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, 0, 2, -1, 3, 1, 0, 1);
+		//rotateTriangle(angle2, 0, 0, 0, 0);
+		//drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 0, 2, 1, 3, 1, 0, 0);
+		//drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 1, 1, 2, 2, 1, 1, 0);
+		//drawOneTriangle(angle, 3 * scale, 3 * scale, 0.0, 0.0, 2, 0, 3, 1, 1, 0, 1);
+		//drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 2, 0, 3, -1, 1, 0, 0);
+		//drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 1, -1, 2, -2, 1, 1, 0);
+		//drawOneTriangle(angle, 3 * scale, -3 * scale, 0.0, 0.0, 0, -2, 1, -3, 1, 0, 1);
+		//drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, 0, -2, -1, -3, 1, 0, 0);
+		//drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, -1, -1, -2, -2, 1, 1, 0);
+		//drawOneTriangle(angle, -3 * scale, -3 * scale, 0.0, 0.0, -2, 0, -3, -1, 1, 0, 1);
+		//drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, -2, 0, -3, 1, 1, 0, 0);
+		//drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, -1, 1, -2, 2, 1, 1, 0);
+		//drawOneTriangle(angle, -3 * scale, 3 * scale, 0.0, 0.0, 0, 2, -1, 3, 1, 0, 1);
 	glPopMatrix();
 	glutSwapBuffers(); //Send the 3D scene to the screen
 }
