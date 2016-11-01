@@ -47,9 +47,8 @@ void drawTriangles(float a, float b, float c, float d, float red = 1.0, float gr
 void rotateTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y )
 {
 	glTranslatef(-move_me_about_x, -move_me_about_y, 0);
-	glRotatef(angle2, 0.0, 0.0, 1.0);
+	glRotatef(angle, 0.0, 0.0, 1.0);
 	glTranslatef(move_me_about_x, move_me_about_y, 0);
-
 }
 
 void drawOneTriangle(GLfloat angle, float around_x, float around_y, float move_me_about_x, float move_me_about_y, float a, float b, float c, float d, float red = 1.0, float green = 1.0, float blue = 1.0)
@@ -86,7 +85,7 @@ void drawScene() {
 	glPopMatrix();
 
 	glPushMatrix();
-		//rotateTriangle(angle2, 0, 0, 0, 0);
+		rotateTriangle(angle2, 0, 0, 0, 0);
 		drawOneTriangle(angle, 3 * scale, 3 * scale, 0.5, 2.5, 0, 2, 1, 3, 1, 0, 0);
 		drawOneTriangle(angle, 3 * scale, 3 * scale, 1.5, 1.5, 1, 1, 2, 2, 1, 1, 0);
 		drawOneTriangle(angle, 3 * scale, 3 * scale, 2.5, 0.5, 2, 0, 3, 1, 1, 0, 1);
@@ -128,7 +127,6 @@ void update(int value)
 
 	glutPostRedisplay();
 	glutTimerFunc(35, update, 0);
-	cout << counter << endl;
 }
 
 int main(int argc, char** argv) {
