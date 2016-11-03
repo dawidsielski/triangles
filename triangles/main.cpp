@@ -72,7 +72,7 @@ void drawScene() {
 	glLoadIdentity(); //Reset the drawing perspective
 
 	glPushMatrix();
-		//rotateTriangle(-angle2, 0, 0, 0, 0);
+		rotateTriangle(-angle2, 0, 0, 0, 0);
 		drawOneTriangle(angle1, scale, scale, 0.5, 0.5, 0, 0, 1, 1, 0, 0, 1);
 		drawOneTriangle(angle1, -scale, scale, -0.5, 0.5, 0, 0, -1, 1, 0, 0, 1);
 		drawOneTriangle(angle1, scale, -scale, 0.5, -0.5, 0, 0, 1, -1, 0, 0, 1);
@@ -89,7 +89,7 @@ void drawScene() {
 	glPopMatrix();
 
 	glPushMatrix();
-		//rotateTriangle(1.5*angle2, 0, 0, 0, 0);
+		rotateTriangle(1.5*angle2, 0, 0, 0, 0);
 		drawOneTriangle(angle1, 3 * scale * 1 / 3, 3 * scale, 0.5, 2.5, 0, 2, 1, 3, 1, 0, 0);
 		drawOneTriangle(angle1, 3 * scale * 2 / 3, 3 * scale * 2 / 3, 1.5, 1.5, 1, 1, 2, 2, 1, 1, 0);
 		drawOneTriangle(angle1, 3 * scale, 3 * scale * 1 / 3, 2.5, 0.5, 2, 0, 3, 1, 1, 0, 1);
